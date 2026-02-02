@@ -27,6 +27,21 @@ export default function Archives() {
     fetchArchives();
   }, []);
 
+  const handleDelete = async (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    if (!window.confirm("确定要删除这条记录吗？此操作无法撤销。")) {
+        return;
+    }
+
+    try {
+        await axios.delete(`/api/v1/archives/${id}`);
+        setRecords(prev => prev.filter(r => r.id !== id));
+    } catch (error) {
+        console.error("Failed to delete record:", error);
+        alert("删除失败，请稍后重试");
+    }
+  };
+
   return (
     <div className="h-full flex flex-col">
       {/* Header & Filters */}
