@@ -1,5 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException, Body
 from app.services.gemini import analyze_video, analyze_photo, chat_with_coach
+from app.core.config import get_data_dir
 from typing import Optional, Dict
 import os
 import json
@@ -154,6 +155,62 @@ async def get_dashboard_stats():
             "style_score": 0,
             "recent_records": []
         }
+
+@api_router.get("/documentation")
+async def get_documentation():
+    """
+    Returns the project documentation.
+    """
+    docs_file = os.path.join(get_data_dir(), "documentation.json")
+    source_docs_file = os.path.join(os.path.dirname(__file__), "..", "..", "data", "documentation.json")
+    
+    if os.path.exists(source_docs_file):
+        try:
+            with open(source_docs_file, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error reading source documentation: {e}")
+            
+    if os.path.exists(docs_file):
+        try:
+            with open(docs_file, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error reading documentation: {e}")
+
+    return []
+
+@api_router.get("/technical-guides")
+async def get_technical_guides():
+    """
+    Returns the list of technical guides.
+    """
+    guides_file = os.path.join(get_data_dir(), "technical_guides.json")
+    
+    # If using Vercel/tmp and file doesn't exist, try to copy from source if available or use empty list
+    # But since we deployed the file with the code, it might be in the source tree, not necessarily in get_data_dir() which points to tmp on Vercel
+    # For simplicity, let's check both or ensure it's copied. 
+    # Actually, for read-only static data, we should read from the app directory, not the writable data dir.
+    
+    # Try to find the file in the source tree first (read-only)
+    source_guides_file = os.path.join(os.path.dirname(__file__), "..", "..", "data", "technical_guides.json")
+    
+    if os.path.exists(source_guides_file):
+        try:
+            with open(source_guides_file, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error reading source technical guides: {e}")
+            
+    # Fallback to get_data_dir() if source not found (e.g. if we decide to make it writable later)
+    if os.path.exists(guides_file):
+        try:
+            with open(guides_file, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error reading technical guides: {e}")
+
+    return []
 
 @api_router.get("/archives")
 async def get_archives():

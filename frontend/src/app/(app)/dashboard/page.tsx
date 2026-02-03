@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Video, Image, Activity, Clock, TrendingUp, Sparkles, ChevronRight } from "lucide-react";
+import { Video, Image, Activity, Clock, TrendingUp, Sparkles, ChevronRight, BookOpen } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import clsx from "clsx";
@@ -38,6 +38,10 @@ export default function Dashboard() {
         </div>
         <div className="flex space-x-4">
            {/* Quick Actions */}
+           <Link href="/documentation" className="bg-emerald-500 text-white px-4 py-2 rounded-lg font-bold flex items-center hover:bg-emerald-400 transition shadow-lg shadow-emerald-400/20">
+             <BookOpen className="w-5 h-5 mr-2" />
+             文档
+           </Link>
            <Link href="/video-studio" className="bg-yellow-400 text-slate-900 px-4 py-2 rounded-lg font-bold flex items-center hover:bg-yellow-300 transition shadow-lg shadow-yellow-400/20">
              <Video className="w-5 h-5 mr-2" />
              分析视频

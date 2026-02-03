@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Video, Image, History, Settings, Activity, Upload, PlayCircle } from "lucide-react";
+import { LayoutDashboard, Video, Image, History, Settings, Activity, Upload, PlayCircle, BookOpen } from "lucide-react";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -12,6 +12,7 @@ const navItems = [
   { name: "视频分析室", href: "/video-studio", icon: Video },
   { name: "穿搭风尚室", href: "/style-studio", icon: Image },
   { name: "历史档案", href: "/archives", icon: History },
+  { name: "文档", href: "/documentation", icon: BookOpen },
   { name: "设置中心", href: "/settings", icon: Settings },
 ];
 
